@@ -1,0 +1,24 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  dockerId: airliftacr  # Replace with your Docker ID for Docker Hub or the admin user name for the Azure Container Registry
+  imageName: airlift-app  # Replace with the name of the image you want to publish
+
+steps:
+- script: docker build -t $(dockerId).azurecr.io/$(imageName) .
+  displayName: 'Build image'
+- task: Docker@0
+  displayName: 'Push an image'
+  inputs:
+    azureSubscription: 'Microsoft Azure Internal Consumption (f31110ec-9da9-4c9b-9edc-9e7a20564cd3)'
+    azureContainerRegistry: '{"loginServer":"$(dockerId).azurecr.io", "id" : "/subscriptions/f31110ec-9da9-4c9b-9edc-9e7a20564cd3/resourceGroups/airlifthack/providers/Microsoft.ContainerRegistry/registries/airliftacr"}'
+    action: 'Push an image'
