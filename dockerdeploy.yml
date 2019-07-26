@@ -3,23 +3,15 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
- 
-
 trigger:
 - master
-
- 
 
 pool:
   vmImage: 'ubuntu-latest'
 
- 
-
 variables:
   dockerId: airliftacr  # Replace with your Docker ID for Docker Hub or the admin user name for the Azure Container Registry
-  imageName: airlift-app  # Replace with the name of the image you want to publish
-
- 
+  imageName: msdnguy/airlift-2019-07  # Replace with the name of the image you want to publish
 
 steps:
 - script: docker build -t $(dockerId).azurecr.io/$(imageName) .
