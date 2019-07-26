@@ -1,0 +1,59 @@
+{
+  "properties": {
+    "displayName": "Audit Non-tag Usage",
+    "policyType": "Custom",
+    "mode": "All",
+    "metadata": {
+      "createdBy": "86c310e6-b24d-4c09-aabf-c9e290a31b56",
+      "createdOn": "2019-07-26T20:32:31.0415459Z",
+      "updatedBy": null,
+      "updatedOn": null
+    },
+    "parameters": {
+      "tagName": {
+        "type": "String",
+        "metadata": {
+          "description": "Name of the tag, such as costCenter"
+        }
+      },
+      "tagValue": {
+        "type": "String",
+        "metadata": {
+          "description": "Value of the tag, such as headquarter"
+        }
+      },
+      "prefix": {
+        "type": "String",
+        "metadata": {
+          "description": "Prefix for Resource group name"
+        }
+      }
+    },
+    "policyRule": {
+      "if": {
+        "allOf": [
+          {
+            "not": {
+              "field": "[concat('tags[',parameters('tagName'), ']')]",
+              "equals": "[parameters('tagValue')]"
+            }
+          },
+          {
+            "field": "type",
+            "equals": "Microsoft.Resources/subscriptions/resourceGroups"
+          },
+          {
+            "field": "name",
+            "like": "[parameters('prefix')]"
+          }
+        ]
+      },
+      "then": {
+        "effect": "audit"
+      }
+    }
+  },
+  "id": "/subscriptions/f31110ec-9da9-4c9b-9edc-9e7a20564cd3/providers/Microsoft.Authorization/policyDefinitions/8ad9c7e2-adc3-4f80-ace5-3e6504527765",
+  "type": "Microsoft.Authorization/policyDefinitions",
+  "name": "8ad9c7e2-adc3-4f80-ace5-3e6504527765"
+}
